@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mapping Area – KCP Jakarta S. Parman | Bank Mandiri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #003D79;
+      --navy-dark:   #002A55;
+      --navy-mid:    #00529E;
+      --navy-light:  #E8F0FA;
+      --yellow:      #FFC72C;
+      --yellow-dark: #E6B000;
+      --yellow-pale: #FFF8E0;
+      --white:       #FFFFFF;
+      --gray-50:     #F8FAFC;
+      --gray-100:    #F1F5F9;
+      --gray-200:    #E2E8F0;
+      --gray-300:    #CBD5E1;
+      --gray-400:    #94A3B8;
+      --gray-500:    #64748B;
+      --gray-600:    #475569;
+      --gray-700:    #334155;
+      --gray-900:    #0F172A;
+      --green:       #16A34A;
+      --green-light: #DCFCE7;
+      --font: 'Inter', system-ui, sans-serif;
+      --radius-sm: 6px;
+      --radius:    10px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow:    0 4px 16px rgba(0,61,121,0.08), 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-md: 0 8px 32px rgba(0,61,121,0.12), 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg: 0 20px 60px rgba(0,61,121,0.16), 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--gray-50);
+      color: var(--gray-700);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── TOP NAV BAR ── */
+    .topbar {
+      background: var(--navy-dark);
+      height: 3px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+
+    /* ── PAGE SHELL ── */
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-bottom: 24px;
+      margin-top: 12px;
+    }
+    .breadcrumb a {
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .breadcrumb a:hover { color: var(--navy); }
+    .breadcrumb .sep { color: var(--gray-300); }
+    .breadcrumb .current { color: var(--gray-600); font-weight: 500; }
+
+    /* ── HEADER ── */
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .header-left { flex: 1; min-width: 260px; }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--yellow-pale);
+      border: 1px solid var(--yellow-dark);
+      color: var(--yellow-dark);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .header-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--yellow-dark);
+      border-radius: 50%;
+    }
+
+    .page-title {
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 800;
+      color: var(--navy-dark);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--gray-500);
+      line-height: 1.6;
+      max-width: 620px;
+    }
+
+    /* ── HEADER ACTIONS ── */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      padding-top: 4px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 16px;
+      border: 1.5px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-600);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-secondary:hover {
+      border-color: var(--navy);
+      color: var(--navy);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-primary:hover {
+      background: var(--navy-mid);
+      box-shadow: 0 4px 16px rgba(0,61,121,0.28);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ── COVERAGE INFO CARD ── */
+    .coverage-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-left: 4px solid var(--navy);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .coverage-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--navy-light);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+
+    .coverage-content { flex: 1; }
+
+    .coverage-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .coverage-text {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.55;
+    }
+
+    .coverage-pill {
+      background: var(--navy-light);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+
+    /* ── MAP SECTION ── */
+    .map-section {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .map-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--gray-100);
+      background: var(--white);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .map-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .map-dot {
+      width: 10px; height: 10px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px var(--green-light);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(22,163,74,0.2); }
+      50%       { box-shadow: 0 0 0 6px rgba(22,163,74,0.08); }
+    }
+
+    .map-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-700);
+    }
+
+    .map-meta {
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+
+    .map-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .map-layer-badges {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .layer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+    .layer-badge.merchant  { color: #7C3AED; background: #F5F3FF; border-color: #DDD6FE; }
+    .layer-badge.ibadah    { color: #0891B2; background: #ECFEFF; border-color: #A5F3FC; }
+    .layer-badge.corporate { color: #D97706; background: #FFFBEB; border-color: #FDE68A; }
+    .layer-badge.territory { color: var(--navy); background: var(--navy-light); border-color: #BFDBFE; }
+
+    .layer-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+    .layer-badge.merchant  .layer-dot { background: #7C3AED; }
+    .layer-badge.ibadah    .layer-dot { background: #0891B2; }
+    .layer-badge.corporate .layer-dot { background: #D97706; }
+    .layer-badge.territory .layer-dot { background: var(--navy); }
+
+    /* ── THE MAP IFRAME ── */
+    .map-frame-wrapper {
+      position: relative;
+      width: 100%;
+      /* 72vh on desktop, min 480px */
+      height: clamp(480px, 72vh, 820px);
+      background: var(--gray-100);
+    }
+
+    .map-frame-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* placeholder shown while iframe loads */
+    .map-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--navy-light) 0%, #EFF6FF 100%);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.4s;
+    }
+    .map-placeholder.hidden { opacity: 0; }
+
+    .map-placeholder-icon {
+      font-size: 52px;
+      margin-bottom: 16px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .map-placeholder-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-bottom: 6px;
+    }
+    .map-placeholder-sub {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    .map-loading-bar {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--navy), var(--yellow));
+      animation: loading-bar 1.8s ease-in-out infinite;
+    }
+    @keyframes loading-bar {
+      0%   { width: 0%; opacity: 1; }
+      80%  { width: 90%; opacity: 1; }
+      100% { width: 100%; opacity: 0; }
+    }
+
+    /* ── MAP NAVIGATION SECTION ── */
+    .nav-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-icon-col {
+      width: 44px;
+      height: 44px;
+      background: var(--navy-light);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+
+    .nav-content { flex: 1; min-width: 200px; }
+
+    .nav-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-section-text {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.65;
+    }
+
+    .nav-action { flex-shrink: 0; padding-top: 2px; }
+
+    /* ── BOTTOM GRID ── */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 680px) {
+      .bottom-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── OPPORTUNITY CARD ── */
+    .opportunity-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+      grid-column: 1 / -1;
+    }
+
+    .opportunity-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .opportunity-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--yellow) 0%, #FFA500 100%);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .opportunity-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy-dark);
+    }
+
+    .opportunity-sub {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-top: 1px;
+    }
+
+    .opportunity-items {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 560px) {
+      .opportunity-items { grid-template-columns: 1fr; }
+    }
+
+    .opp-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      align-items: flex-start;
+    }
+
+    .opp-item-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .opp-item-text {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.55;
+    }
+
+    .opp-item-text strong {
+      display: block;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      flex: 1;
+      min-width: 130px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stat-icon {
+      width: 34px; height: 34px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .stat-icon.blue   { background: var(--navy-light); }
+    .stat-icon.yellow { background: var(--yellow-pale); }
+    .stat-icon.purple { background: #F5F3FF; }
+    .stat-icon.cyan   { background: #ECFEFF; }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--navy-dark);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* ── FOOTER LINE ── */
+    .page-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--gray-200);
+      flex-wrap: wrap;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+
+    .footer-mandiri {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mandiri-logo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--navy);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 5px 12px;
+      border-radius: 999px;
+    }
+
+    /* ── MOBILE TWEAKS ── */
+    @media (max-width: 640px) {
+      .page { padding: 16px 14px 48px; }
+      .page-header { flex-direction: column; gap: 14px; }
+      .header-actions { width: 100%; flex-wrap: wrap; }
+      .btn-secondary, .btn-primary { flex: 1; justify-content: center; }
+      .map-topbar { flex-direction: column; align-items: flex-start; }
+      .nav-section { flex-direction: column; }
+      .nav-action { width: 100%; }
+      .nav-action .btn-primary { width: 100%; justify-content: center; }
+      .stats-strip { display: grid; grid-template-columns: 1fr 1fr; }
+      .coverage-card { flex-wrap: wrap; }
+      .coverage-pill { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<main class="page">
+
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="#">Dashboard</a>
+    <span class="sep">›</span>
+    <a href="#">Wilayah Kerja</a>
+    <span class="sep">›</span>
+    <span class="current">Mapping Area S. Parman</span>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="page-header">
+    <div class="header-left">
+      <div class="header-badge">KCP Jakarta S. Parman</div>
+      <h1 class="page-title">Mapping Area S. Parman</h1>
+      <p class="page-subtitle">
+        Peta segmentasi wilayah, potensi merchant QRIS/EDC, dan area akuisisi tabungan nasabah di wilayah kerja KCP Jakarta S. Parman.
+      </p>
+    </div>
+    <div class="header-actions">
+      <a href="https://www.google.com/maps/d/edit" target="_blank" class="btn-secondary">
+        <span>✏️</span>
+        Edit Peta Google My Maps
+      </a>
+    </div>
+  </header>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip" aria-label="Ringkasan area">
+    <div class="stat-card">
+      <div class="stat-icon blue">🏢</div>
+      <div>
+        <div class="stat-value">±1 km</div>
+        <div class="stat-label">Radius Coverage</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon yellow">🏪</div>
+      <div>
+        <div class="stat-value">Merchant</div>
+        <div class="stat-label">Potensi QRIS/EDC</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">🕌</div>
+      <div>
+        <div class="stat-value">Ibadah</div>
+        <div class="stat-label">Ekosistem Digital</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon cyan">🏭</div>
+      <div>
+        <div class="stat-value">Barito</div>
+        <div class="stat-label">Corporate Anchor</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COVERAGE INFO CARD -->
+  <div class="coverage-card" role="note" aria-label="Coverage Information">
+    <div class="coverage-icon">📍</div>
+    <div class="coverage-content">
+      <div class="coverage-label">Coverage Information</div>
+      <p class="coverage-text">
+        Cakupan pemetaan difokuskan pada radius <strong>±1 km</strong> dari KCP Jakarta S. Parman guna mengidentifikasi peluang pengembangan merchant QRIS/EDC dan akuisisi dana retail secara lebih terarah.
+      </p>
+    </div>
+    <div class="coverage-pill">Aktif</div>
+  </div>
+
+  <!-- MAP SECTION -->
+  <section class="map-section" aria-label="Peta Google My Maps">
+
+    <!-- Map Top Bar -->
+    <div class="map-topbar">
+      <div class="map-title-row">
+        <div class="map-dot" aria-hidden="true"></div>
+        <span class="map-label">Peta Wilayah Kerja – KCP S. Parman</span>
+        <span class="map-meta">· Google My Maps</span>
+      </div>
+
+      <div class="map-layer-badges" aria-label="Layer aktif di peta">
+        <span class="layer-badge merchant">
+          <span class="layer-dot" aria-hidden="true"></span>
+          Merchant
+        </span>
+        <span class="layer-badge ibadah">
+          <span class="layer-dot" aria-hidden="true"></span>
+          Tempat Ibadah
+        </span>
+        <span class="layer-badge corporate">
+          <span class="layer-dot" aria-hidden="true"></span>
+          Corporate Anchor
+        </span>
+        <span class="layer-badge territory">
+          <span class="layer-dot" aria-hidden="true"></span>
+          Territory
+        </span>
+      </div>
+    </div>
+
+    <!-- Map Iframe wrapper -->
+    <div class="map-frame-wrapper">
+
+      <!-- Loading placeholder (hidden once iframe loads) -->
+      <div class="map-placeholder" id="mapPlaceholder" aria-hidden="true">
+        <div class="map-placeholder-icon">🗺️</div>
+        <div class="map-placeholder-title">Memuat Peta Wilayah…</div>
+        <div class="map-placeholder-sub">Koneksi ke Google My Maps</div>
+        <div class="map-loading-bar"></div>
+      </div>
+
+      <!--
+        REPLACE src below with your actual Google My Maps embed URL.
+        Format: https://www.google.com/maps/d/embed?mid=YOUR_MAP_ID&ehbc=2E312F
+        The placeholder above hides when the iframe fires onload.
+      -->
+      <iframe
+        id="mainMap"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.2082348742534!2d106.79200631476952!3d-6.212710795497658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f703bf087991%3A0x26fc5cbfab8a5e6f!2sJl.%20S.%20Parman%2C%20Jakarta%20Barat!5e0!3m2!1sid!2sid!4v1718000000000!5m2!1sid!2sid"
+        allowfullscreen
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Peta Wilayah KCP Jakarta S. Parman"
+        onload="document.getElementById('mapPlaceholder').classList.add('hidden')">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- MAP NAVIGATION GUIDANCE -->
+  <div class="nav-section" aria-label="Petunjuk Navigasi Peta">
+    <div class="nav-icon-col" aria-hidden="true">🧭</div>
+    <div class="nav-content">
+      <div class="nav-section-title">Petunjuk Navigasi Peta</div>
+      <p class="nav-section-text">
+        Gunakan menu <strong>Legenda</strong> pada pojok kiri atas peta untuk mengaktifkan, menonaktifkan, atau menyaring layer informasi sesuai kebutuhan. Layer mencakup koridor wilayah, titik potensi merchant, lokasi tempat ibadah, corporate anchor, dan tampilan citra satelit untuk mendukung analisis serta perencanaan aktivitas akuisisi lapangan.
+      </p>
+    </div>
+    <div class="nav-action">
+      <a href="https://maps.google.com/?q=Jl.+S.+Parman,+Jakarta+Barat" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Buka di Google Maps">
+        <span>📍</span>
+        Buka di Google Maps
+      </a>
+    </div>
+  </div>
+
+  <!-- BUSINESS OPPORTUNITY HIGHLIGHTS -->
+  <div class="opportunity-card" aria-labelledby="opp-title">
+    <div class="opportunity-header">
+      <div class="opportunity-icon" aria-hidden="true">💡</div>
+      <div>
+        <div class="opportunity-title" id="opp-title">Business Opportunity Highlights</div>
+        <div class="opportunity-sub">Potensi pengembangan bisnis di wilayah kerja S. Parman</div>
+      </div>
+    </div>
+
+    <div class="opportunity-items">
+      <div class="opp-item">
+        <div class="opp-item-icon" aria-hidden="true">🏢</div>
+        <div class="opp-item-text">
+          <strong>Kawasan Bisnis &amp; Komersial</strong>
+          Pusat aktivitas bisnis, perkantoran, dan kawasan komersial berpotensi mendukung pertumbuhan merchant QRIS/EDC.
+        </div>
+      </div>
+
+      <div class="opp-item">
+        <div class="opp-item-icon" aria-hidden="true">🕌</div>
+        <div class="opp-item-text">
+          <strong>Ekosistem Tempat Ibadah</strong>
+          Lokasi tempat ibadah dapat menjadi target pengembangan ekosistem transaksi digital dan akuisisi dana retail.
+        </div>
+      </div>
+
+      <div class="opp-item">
+        <div class="opp-item-icon" aria-hidden="true">🏭</div>
+        <div class="opp-item-text">
+          <strong>Barito Pacific Group</strong>
+          Corporate anchor membuka peluang ekspansi bisnis retail di sekitar ekosistem perusahaan.
+        </div>
+      </div>
+
+      <div class="opp-item">
+        <div class="opp-item-icon" aria-hidden="true">📋</div>
+        <div class="opp-item-text">
+          <strong>Prioritas Kunjungan Lapangan</strong>
+          Pemetaan wilayah mendukung prioritas kunjungan lapangan dan optimalisasi coverage area tim cabang.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE FOOTER -->
+  <footer class="page-footer">
+    <span class="footer-text">Data peta diperbarui secara berkala oleh tim KCP Jakarta S. Parman</span>
+    <div class="footer-mandiri">
+      <span class="footer-text">Powered by</span>
+      <span class="mandiri-logo-pill">MANDIRI</span>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // Auto-hide placeholder after 3 seconds as fallback (in case onload doesn't fire for cross-origin iframes)
+  setTimeout(function () {
+    var ph = document.getElementById('mapPlaceholder');
+    if (ph) ph.classList.add('hidden');
+  }, 3000);
+</script>
+
+</body>
+</html>

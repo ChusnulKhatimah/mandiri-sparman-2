@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monitoring Merchant & Nasabah – KCP Jakarta S. Parman | Bank Mandiri</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Mandiri brand */
+      --navy:        #003D79;
+      --navy-dark:   #002A55;
+      --navy-mid:    #00529E;
+      --navy-light:  #E8F0FA;
+      --yellow:      #FFC72C;
+      --yellow-dark: #E6B000;
+      --yellow-pale: #FFF8E0;
+
+      /* Neutrals */
+      --white:       #FFFFFF;
+      --gray-50:     #F8FAFC;
+      --gray-100:    #F1F5F9;
+      --gray-200:    #E2E8F0;
+      --gray-300:    #CBD5E1;
+      --gray-400:    #94A3B8;
+      --gray-500:    #64748B;
+      --gray-600:    #475569;
+      --gray-700:    #334155;
+      --gray-900:    #0F172A;
+
+      /* Semantic */
+      --green:       #16A34A;
+      --green-pale:  #DCFCE7;
+
+      /* Sheets accent — a deliberate teal that signals "data / spreadsheet" */
+      --sheets:      #0F9D58;
+      --sheets-pale: #E6F4EA;
+      --sheets-mid:  #137333;
+
+      --font: 'Inter', system-ui, sans-serif;
+
+      /* Tokens */
+      --radius-sm:  6px;
+      --radius:     10px;
+      --radius-lg:  16px;
+      --radius-xl:  20px;
+      --shadow-xs:  0 1px 2px rgba(0,0,0,0.05);
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow:     0 4px 16px rgba(0,61,121,0.08), 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-md:  0 8px 32px rgba(0,61,121,0.10), 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg:  0 20px 60px rgba(0,61,121,0.14), 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--gray-50);
+      color: var(--gray-700);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+    }
+
+    /* ── ACCENT BAR ── */
+    .accent-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--navy-dark) 0%, var(--navy) 50%, var(--sheets) 100%);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+    }
+
+    /* ── PAGE SHELL ── */
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-bottom: 24px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .breadcrumb a {
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .breadcrumb a:hover { color: var(--navy); }
+    .breadcrumb .sep { color: var(--gray-300); user-select: none; }
+    .breadcrumb .current { color: var(--gray-600); font-weight: 500; }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .header-left { flex: 1; min-width: 260px; }
+
+    .header-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--sheets-pale);
+      border: 1px solid #A8D5B5;
+      color: var(--sheets-mid);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .header-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--sheets);
+      border-radius: 50%;
+    }
+
+    .page-title {
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 800;
+      color: var(--navy-dark);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--gray-500);
+      line-height: 1.65;
+      max-width: 640px;
+    }
+
+    /* ── HEADER ACTIONS ── */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      padding-top: 6px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-primary:hover {
+      background: var(--navy-mid);
+      box-shadow: 0 4px 18px rgba(0,61,121,0.30);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 16px;
+      border: 1.5px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-600);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-secondary:hover {
+      border-color: var(--navy);
+      color: var(--navy);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ── MONITORING INFO CARD ── */
+    .info-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .info-card-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0;
+    }
+
+    @media (max-width: 680px) {
+      .info-card-inner { grid-template-columns: 1fr; }
+    }
+
+    .info-main {
+      padding: 20px 24px;
+      border-right: 1px solid var(--gray-100);
+    }
+
+    @media (max-width: 680px) {
+      .info-main { border-right: none; border-bottom: 1px solid var(--gray-100); }
+    }
+
+    .info-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .info-label::before {
+      content: '';
+      display: inline-block;
+      width: 16px; height: 3px;
+      background: var(--yellow);
+      border-radius: 2px;
+    }
+
+    .info-text {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+
+    .info-checklist {
+      padding: 20px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      min-width: 260px;
+    }
+
+    @media (max-width: 680px) {
+      .info-checklist {
+        padding: 16px 24px;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .info-checklist { grid-template-columns: 1fr; }
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--gray-600);
+    }
+
+    .check-icon {
+      width: 18px; height: 18px;
+      background: var(--green-pale);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    /* ── SHEETS SECTION WRAPPER ── */
+    .sheets-section {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Top chrome bar — mimics a browser/app chrome to anchor the iframe */
+    .sheets-chrome {
+      background: var(--navy-dark);
+      padding: 0 16px;
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 48px;
+      flex-wrap: wrap;
+    }
+
+    .chrome-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chrome-dots {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .chrome-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+    .chrome-dot.red    { background: #FF5F57; }
+    .chrome-dot.yellow { background: #FFBD2E; }
+    .chrome-dot.green  { background: #28C840; }
+
+    .chrome-title-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-sm);
+      padding: 5px 12px;
+    }
+
+    .sheets-icon {
+      width: 16px; height: 16px;
+      background: var(--sheets);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: white;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .chrome-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      white-space: nowrap;
+    }
+
+    .chrome-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sync-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 500;
+    }
+
+    .sync-dot {
+      width: 7px; height: 7px;
+      background: var(--sheets);
+      border-radius: 50%;
+      animation: blink 2.4s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 1; }
+      40%            { opacity: 0.2; }
+    }
+
+    .chrome-open-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.80);
+      font-family: var(--font);
+      font-size: 11px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .chrome-open-btn:hover {
+      background: rgba(255,255,255,0.18);
+      color: var(--white);
+    }
+
+    /* ── SECTION LABEL STRIP (between chrome and iframe) ── */
+    .section-label-strip {
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section-label-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-700);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label-title::before {
+      content: '';
+      display: inline-block;
+      width: 3px; height: 14px;
+      background: var(--sheets);
+      border-radius: 2px;
+    }
+
+    .section-label-meta {
+      font-size: 11.5px;
+      color: var(--gray-400);
+    }
+
+    /* ── THE IFRAME ── */
+    .sheets-frame-wrapper {
+      position: relative;
+      width: 100%;
+      /* 72vh on desktop, min 500px */
+      height: clamp(500px, 74vh, 860px);
+      background: var(--gray-100);
+    }
+
+    .sheets-frame-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Loading placeholder */
+    .sheets-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #F0FAF4 0%, #EFF6FF 100%);
+      pointer-events: none;
+      transition: opacity 0.5s;
+      z-index: 10;
+    }
+    .sheets-placeholder.hidden { opacity: 0; pointer-events: none; }
+
+    .placeholder-graphic {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    /* Fake spreadsheet grid illustration */
+    .fake-sheet {
+      width: 200px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      opacity: 0.9;
+    }
+
+    .fake-sheet-header {
+      background: var(--sheets);
+      padding: 6px 8px;
+      display: grid;
+      grid-template-columns: 60px 1fr 1fr;
+      gap: 4px;
+    }
+
+    .fake-cell-head {
+      height: 8px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 2px;
+    }
+
+    .fake-sheet-rows {
+      padding: 4px 8px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .fake-row {
+      display: grid;
+      grid-template-columns: 60px 1fr 1fr;
+      gap: 4px;
+    }
+
+    .fake-cell {
+      height: 7px;
+      background: var(--gray-100);
+      border-radius: 2px;
+      animation: shimmer 1.6s ease-in-out infinite;
+    }
+
+    .fake-cell:nth-child(2) { animation-delay: 0.1s; }
+    .fake-cell:nth-child(3) { animation-delay: 0.2s; }
+
+    .fake-row:nth-child(2) .fake-cell { animation-delay: 0.3s; }
+    .fake-row:nth-child(3) .fake-cell { animation-delay: 0.5s; }
+    .fake-row:nth-child(4) .fake-cell { animation-delay: 0.7s; }
+    .fake-row:nth-child(5) .fake-cell { animation-delay: 0.9s; }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
+    }
+
+    .placeholder-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-bottom: 5px;
+    }
+    .placeholder-sub {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    /* progress bar */
+    .placeholder-progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--navy) 0%, var(--sheets) 100%);
+      animation: progress-run 2s ease-in-out infinite;
+      border-radius: 0 2px 2px 0;
+    }
+
+    @keyframes progress-run {
+      0%   { width: 5%; opacity: 1; }
+      70%  { width: 85%; opacity: 1; }
+      100% { width: 100%; opacity: 0; }
+    }
+
+    /* ── BOTTOM FOOTER STRIP on sheets card ── */
+    .sheets-footer-strip {
+      background: var(--gray-50);
+      border-top: 1px solid var(--gray-100);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .sheets-footer-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+
+    .hint-icon {
+      font-size: 14px;
+    }
+
+    /* ── ACCESS CARD ── */
+    .access-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .access-icon-col {
+      width: 44px; height: 44px;
+      background: var(--sheets-pale);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+
+    .access-content { flex: 1; min-width: 180px; }
+
+    .access-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-700);
+      margin-bottom: 5px;
+    }
+
+    .access-text {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+
+    .access-action { flex-shrink: 0; }
+
+    /* ── PAGE FOOTER ── */
+    .page-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 20px;
+      margin-top: 4px;
+      border-top: 1px solid var(--gray-200);
+      flex-wrap: wrap;
+    }
+
+    .footer-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--gray-400);
+      text-decoration: none;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--gray-200);
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .footer-nav-link:hover {
+      color: var(--navy);
+      border-color: var(--navy);
+    }
+
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--navy);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 5px 12px;
+      border-radius: 999px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .page { padding: 16px 14px 48px; }
+      .page-header { flex-direction: column; gap: 14px; }
+      .header-actions { width: 100%; }
+      .btn-primary { width: 100%; justify-content: center; }
+      .sheets-chrome { padding: 0 12px; }
+      .chrome-dots { display: none; }
+      .chrome-open-btn { display: none; }
+      .access-card { flex-direction: column; align-items: flex-start; }
+      .access-action { width: 100%; }
+      .access-action .btn-primary { width: 100%; justify-content: center; }
+      .page-footer { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- accent stripe at top -->
+<div class="accent-bar" aria-hidden="true"></div>
+
+<main class="page">
+
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="#">Dashboard</a>
+    <span class="sep">›</span>
+    <a href="#">KCP Jakarta S. Parman</a>
+    <span class="sep">›</span>
+    <span class="current">Monitoring Merchant &amp; Nasabah</span>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       1. HEADER
+  ══════════════════════════════════════ -->
+  <header class="page-header">
+    <div class="header-left">
+      <div class="header-eyebrow">Google Sheets · Live Database</div>
+      <h1 class="page-title">Monitoring Merchant &amp; Nasabah</h1>
+      <p class="page-subtitle">
+        Database monitoring merchant QRIS/EDC dan prospek nasabah yang diperbarui secara terintegrasi untuk mendukung aktivitas akuisisi dan tindak lanjut lapangan secara real-time.
+      </p>
+    </div>
+    <div class="header-actions">
+      <!--
+        REPLACE href below with your actual Google Sheets URL.
+        e.g. https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit
+      -->
+      <a
+        href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary"
+        aria-label="Buka Database Monitoring di Google Sheets"
+      >
+        <span aria-hidden="true">📊</span>
+        Buka Database Monitoring
+      </a>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       2. MONITORING INFORMATION
+  ══════════════════════════════════════ -->
+  <div class="info-card" role="note" aria-label="Monitoring Information">
+    <div class="info-card-inner">
+      <div class="info-main">
+        <div class="info-label">Monitoring Information</div>
+        <p class="info-text">
+          Data pada halaman ini tersinkronisasi secara berkala dengan database Google Sheets yang digunakan bersama oleh tim cabang.
+          Setiap pembaruan data, hasil kunjungan lapangan, maupun perkembangan prospek merchant dan nasabah akan tercermin secara otomatis pada dashboard.
+        </p>
+      </div>
+      <div class="info-checklist" aria-label="Fitur monitoring">
+        <div class="check-item">
+          <span class="check-icon" aria-hidden="true">✓</span>
+          Update Status Akuisisi
+        </div>
+        <div class="check-item">
+          <span class="check-icon" aria-hidden="true">✓</span>
+          Monitoring Merchant QRIS/EDC
+        </div>
+        <div class="check-item">
+          <span class="check-icon" aria-hidden="true">✓</span>
+          Prospek Nasabah Potensial
+        </div>
+        <div class="check-item">
+          <span class="check-icon" aria-hidden="true">✓</span>
+          Catatan Tindak Lanjut Lapangan
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       3. DATABASE MONITORING (MAIN VISUAL)
+  ══════════════════════════════════════ -->
+  <section class="sheets-section" aria-label="Database Monitoring Merchant dan Nasabah">
+
+    <!-- Chrome bar -->
+    <div class="sheets-chrome" aria-hidden="true">
+      <div class="chrome-left">
+        <div class="chrome-dots">
+          <div class="chrome-dot red"></div>
+          <div class="chrome-dot yellow"></div>
+          <div class="chrome-dot green"></div>
+        </div>
+        <div class="chrome-title-pill">
+          <div class="sheets-icon">S</div>
+          <span class="chrome-title">Monitoring Merchant &amp; Nasabah – KCP S. Parman.xlsx</span>
+        </div>
+      </div>
+      <div class="chrome-right">
+        <div class="sync-badge">
+          <div class="sync-dot"></div>
+          Tersinkronisasi
+        </div>
+        <a
+          href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="chrome-open-btn"
+        >
+          ↗ Buka penuh
+        </a>
+      </div>
+    </div>
+
+    <!-- Section label strip -->
+    <div class="section-label-strip">
+      <div class="section-label-title">Database Monitoring Merchant &amp; Nasabah</div>
+      <div class="section-label-meta">Scroll horizontal untuk melihat seluruh kolom · Filter tersedia di baris pertama</div>
+    </div>
+
+    <!-- IFRAME wrapper -->
+    <div class="sheets-frame-wrapper">
+
+      <!-- Loading placeholder -->
+      <div class="sheets-placeholder" id="sheetsPlaceholder" aria-hidden="true">
+        <div class="placeholder-graphic">
+          <div class="fake-sheet">
+            <div class="fake-sheet-header">
+              <div class="fake-cell-head"></div>
+              <div class="fake-cell-head"></div>
+              <div class="fake-cell-head"></div>
+            </div>
+            <div class="fake-sheet-rows">
+              <div class="fake-row">
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+              </div>
+              <div class="fake-row">
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+              </div>
+              <div class="fake-row">
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+              </div>
+              <div class="fake-row">
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+              </div>
+              <div class="fake-row">
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+                <div class="fake-cell"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="placeholder-title">Memuat Database Monitoring…</div>
+        <div class="placeholder-sub">Menghubungkan ke Google Sheets</div>
+        <div class="placeholder-progress"></div>
+      </div>
+
+      <!--
+        REPLACE src below with your Google Sheets publish/embed URL.
+
+        To get the embed URL from Google Sheets:
+          File → Share → Publish to web → Embed → Copy the <iframe> src
+        It will look like:
+          https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/pubhtml?widget=true&headers=false
+        
+        Or for a specific range / sheet:
+          https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/gviz/tq?tqx=out:html&sheet=Sheet1
+      -->
+      <iframe
+        id="sheetsFrame"
+        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSAMPLEIDHERE/pubhtml?widget=true&amp;headers=false"
+        allowfullscreen
+        title="Database Monitoring Merchant dan Nasabah – KCP Jakarta S. Parman"
+        onload="document.getElementById('sheetsPlaceholder').classList.add('hidden')">
+      </iframe>
+    </div>
+
+    <!-- Footer strip on sheets card -->
+    <div class="sheets-footer-strip">
+      <div class="sheets-footer-hint">
+        <span class="hint-icon" aria-hidden="true">💡</span>
+        Gunakan filter pada baris pertama spreadsheet untuk menyaring data berdasarkan status, tanggal, atau kategori merchant.
+      </div>
+      <a
+        href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-secondary"
+        style="font-size:12px; padding:6px 14px;"
+      >
+        <span aria-hidden="true">📊</span>
+        Buka di Sheets
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       4. AKSES GOOGLE SHEETS
+  ══════════════════════════════════════ -->
+  <div class="access-card" aria-label="Akses Google Sheets">
+    <div class="access-icon-col" aria-hidden="true">🔗</div>
+    <div class="access-content">
+      <div class="access-title">Akses Google Sheets</div>
+      <p class="access-text">
+        Lebih nyaman menggunakan tampilan penuh? Klik <strong>"Buka Database Monitoring"</strong> untuk membuka database monitoring secara langsung di Google Sheets menggunakan akun kerja yang telah diberikan akses.
+      </p>
+    </div>
+    <div class="access-action">
+      <a
+        href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary"
+        aria-label="Buka Database Monitoring di Google Sheets"
+      >
+        <span aria-hidden="true">📊</span>
+        Buka Database Monitoring
+      </a>
+    </div>
+  </div>
+
+  <!-- PAGE FOOTER -->
+  <footer class="page-footer">
+    <nav class="footer-nav" aria-label="Halaman terkait">
+      <a href="#" class="footer-nav-link">
+        <span aria-hidden="true">🗺️</span>
+        Mapping Area
+      </a>
+      <a href="#" class="footer-nav-link">
+        <span aria-hidden="true">🏠</span>
+        Dashboard
+      </a>
+    </nav>
+    <div class="footer-brand" aria-label="Bank Mandiri">MANDIRI</div>
+  </footer>
+
+</main>
+
+<script>
+  // Fallback: hide placeholder after 4s if iframe onload doesn't fire
+  // (Google Sheets cross-origin iframes sometimes suppress the load event)
+  var fallbackTimer = setTimeout(function () {
+    var ph = document.getElementById('sheetsPlaceholder');
+    if (ph) ph.classList.add('hidden');
+  }, 4000);
+
+  var frame = document.getElementById('sheetsFrame');
+  if (frame) {
+    frame.addEventListener('load', function () {
+      clearTimeout(fallbackTimer);
+      var ph = document.getElementById('sheetsPlaceholder');
+      if (ph) ph.classList.add('hidden');
+    });
+  }
+</script>
+
+</body>
+</html>
