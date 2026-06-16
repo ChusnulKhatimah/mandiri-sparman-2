@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mandiri S. Parman – Idea Mapping & Monitoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #003D79;
+      --navy-dark: #002A55;
+      --navy-light: #004F99;
+      --yellow: #FFC72C;
+      --white: #FFFFFF;
+      --gray-50: #F8FAFC;
+      --gray-100: #F1F5F9;
+      --gray-200: #E2E8F0;
+      --gray-300: #CBD5E1;
+      --gray-400: #94A3B8;
+      --gray-500: #64748B;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1E293B;
+      --sidebar-w: 240px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
+    }
+
+    /* ── LAYOUT SHELL ── */
+    .shell {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-brand {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .sidebar-logo {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-logo img {
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--yellow);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      line-height: 1.3;
+    }
+
+    .sidebar-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .sidebar-section-label {
+      padding: 20px 20px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .sidebar-nav {
+      padding: 4px 12px;
+      flex: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      margin-bottom: 2px;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { background: rgba(255,255,255,0.08); }
+
+    .nav-item.active {
+      background: rgba(255,199,44,0.15);
+      border-left: 3px solid var(--yellow);
+      padding-left: 9px;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .nav-item.active .nav-icon { color: var(--yellow); }
+
+    .nav-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.70);
+    }
+
+    .nav-item.active .nav-label {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.6;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 28px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar-breadcrumb {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    .topbar-breadcrumb span {
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .topbar-date {
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+
+    .topbar-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,61,121,0.07);
+      border: 1px solid rgba(0,61,121,0.15);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22C55E;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 32px 40px;
+    }
+
+    /* page sections — only active shown */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── HOME PAGE ── */
+    .home-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,199,44,0.08);
+    }
+
+    .home-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: 60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,199,44,0.18);
+      border: 1px solid rgba(255,199,44,0.30);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--yellow);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .hero-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.70);
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    /* ── MENU CARDS ── */
+    .menu-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 0;
+    }
+
+    .menu-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 28px 28px 24px;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .menu-card:hover {
+      border-color: var(--navy);
+      box-shadow: 0 8px 24px rgba(0,61,121,0.12);
+      transform: translateY(-2px);
+    }
+
+    .card-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+
+    .card-icon-wrap.blue { background: rgba(0,61,121,0.08); }
+    .card-icon-wrap.yellow { background: rgba(255,199,44,0.15); }
+
+    .card-icon-wrap svg { width: 22px; height: 22px; }
+    .card-icon-wrap.blue svg { color: var(--navy); }
+    .card-icon-wrap.yellow svg { color: #D4A000; }
+
+    .card-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      align-self: flex-start;
+    }
+
+    .card-btn:hover { background: var(--navy-dark); }
+    .card-btn svg { width: 13px; height: 13px; }
+
+    /* ── PLACEHOLDER PAGES ── */
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 400px;
+      gap: 12px;
+      color: var(--gray-400);
+    }
+
+    .placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
+    .placeholder h2 { font-size: 18px; font-weight: 600; color: var(--gray-600); }
+    .placeholder p { font-size: 13px; }
+
+    /* ── MAPPING PAGE ── */
+    .section-header {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .section-header-text h2 {
+      font-size: 18px; font-weight: 700; color: var(--gray-800); margin-bottom: 6px;
+    }
+    .section-header-text p {
+      font-size: 13px; color: var(--gray-500); line-height: 1.6; max-width: 600px;
+    }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 16px; background: var(--white); color: var(--navy);
+      font-size: 12px; font-weight: 600; border: 1.5px solid var(--navy);
+      border-radius: 8px; cursor: pointer; white-space: nowrap;
+      text-decoration: none; transition: background 0.15s, color 0.15s; flex-shrink: 0;
+    }
+    .btn-outline:hover { background: var(--navy); color: var(--white); }
+    .btn-outline svg { width: 13px; height: 13px; }
+    .info-box {
+      background: rgba(0,61,121,0.04); border: 1.5px solid rgba(0,61,121,0.12);
+      border-left: 4px solid var(--navy); border-radius: 10px;
+      padding: 18px 22px; margin-bottom: 16px;
+    }
+    .info-box-title {
+      font-size: 12px; font-weight: 700; color: var(--navy);
+      letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .info-box p { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+    .map-embed-wrap {
+      background: var(--white); border: 1.5px solid var(--gray-200);
+      border-radius: 14px; overflow: hidden; margin-bottom: 16px; height: 480px;
+    }
+    .map-embed-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+    .nav-hint {
+      background: var(--white); border: 1.5px solid var(--gray-200);
+      border-radius: 14px; padding: 20px 24px; margin-bottom: 16px;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    }
+    .nav-hint-body { flex: 1; }
+    .nav-hint-title {
+      font-size: 13px; font-weight: 700; color: var(--gray-700);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 7px;
+    }
+    .nav-hint-title svg { width: 15px; height: 15px; color: var(--navy); }
+    .nav-hint p { font-size: 13px; color: var(--gray-500); line-height: 1.65; }
+    .highlights-box {
+      background: var(--white); border: 1.5px solid var(--gray-200);
+      border-radius: 14px; padding: 24px 28px;
+    }
+    .highlights-title {
+      font-size: 14px; font-weight: 700; color: var(--gray-800);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .highlights-title svg { width: 16px; height: 16px; color: var(--yellow); }
+    .highlight-item {
+      display: flex; gap: 12px; padding: 12px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .highlight-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .highlight-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--navy);
+      flex-shrink: 0; margin-top: 5px;
+    }
+    .highlight-item p { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+
+    /* ── CHECKLIST ── */
+    .checklist { display: flex; flex-direction: column; gap: 8px; }
+    .checklist-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 500; color: var(--gray-700);
+    }
+    .checklist-item svg {
+      width: 16px; height: 16px; color: #16A34A; flex-shrink: 0;
+    }
+
+    /* ── LOGOUT ── */
+    .sidebar-logout {
+      padding: 12px 12px 4px;
+    }
+    .logout-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(220,38,38,0.10);
+      border: 1px solid rgba(220,38,38,0.20);
+      border-radius: 8px;
+      color: #FCA5A5;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .logout-btn:hover {
+      background: rgba(220,38,38,0.22);
+      color: #FEE2E2;
+    }
+    .logout-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <img id="sidebarLogo" src="" alt="Bank Mandiri" />
+      </div>
+      <div class="sidebar-title">Merchant &amp; Customer<br>Dashboard</div>
+      <div class="sidebar-sub">KCP Jakarta S. Parman</div>
+    </div>
+
+    <div class="sidebar-section-label">Menu</div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-page="home" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span class="nav-label">Home Page</span>
+      </a>
+      <a class="nav-item" data-page="mapping" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>
+        </svg>
+        <span class="nav-label">Mapping Area</span>
+      </a>
+      <a class="nav-item" data-page="monitoring" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        <span class="nav-label">Monitoring Merchant</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-logout">
+      <button class="logout-btn" onclick="handleLogout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Keluar
+      </button>
+    </div>
+    <div class="sidebar-footer">
+      BranchX Initiative<br>
+      by Chusnul &amp; Shafilla
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-breadcrumb">Portal &rsaquo; <span id="breadcrumb-label">Home Page</span></div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbar-date"></div>
+        <div class="topbar-badge">
+          <div class="badge-dot"></div>
+          KCP Jakarta S. Parman
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- ── HOME PAGE ── -->
+      <section class="page active" id="page-home">
+
+        <div class="home-hero">
+          <div class="hero-tag">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+            Portal Internal Aktif
+          </div>
+          <div class="hero-title">Dashboard KCP Jakarta S. Parman</div>
+          <div class="hero-desc">
+            Platform internal pendukung pengelolaan wilayah kerja KCP Jakarta S. Parman yang dirancang untuk
+            meningkatkan efektivitas pengembangan bisnis, akuisisi merchant, dan koordinasi aktivitas lapangan.
+            <br><br>
+            Dashboard ini menyediakan informasi terintegrasi untuk pemetaan potensi wilayah, pengelolaan
+            coverage sales force, serta monitoring perkembangan merchant dan nasabah.
+          </div>
+        </div>
+
+        <div class="menu-cards">
+
+          <div class="menu-card" onclick="navigate('mapping')">
+            <div class="card-icon-wrap blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>
+              </svg>
+            </div>
+            <div class="card-tag">Menu Utama 1</div>
+            <div class="card-title">Mapping Area S. Parman</div>
+            <div class="card-desc">
+              Visualisasi area kerja dan potensi bisnis cabang. Petakan coverage wilayah, titik merchant aktif, dan peluang akuisisi baru secara interaktif.
+            </div>
+            <button class="card-btn" onclick="event.stopPropagation(); navigate('mapping')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+              Masuk ke Mapping Area
+            </button>
+          </div>
+
+          <div class="menu-card" onclick="navigate('monitoring')">
+            <div class="card-icon-wrap yellow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+            </div>
+            <div class="card-tag">Menu Utama 2</div>
+            <div class="card-title">Monitoring Merchant &amp; Nasabah</div>
+            <div class="card-desc">
+              Monitoring akuisisi merchant QRIS/EDC dan prospek nasabah. Pantau pipeline, status onboarding, dan performa tim di lapangan secara real-time.
+            </div>
+            <button class="card-btn" onclick="event.stopPropagation(); navigate('monitoring')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+              Masuk ke Monitoring
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── MAPPING PAGE ── -->
+      <section class="page" id="page-mapping">
+
+        <!-- Header -->
+        <div class="section-header">
+          <div class="section-header-text">
+            <h2>Mapping Area S. Parman</h2>
+            <p>Peta segmentasi wilayah, potensi merchant QRIS/EDC, dan area akuisisi tabungan nasabah di wilayah kerja KCP Jakarta S. Parman.</p>
+          </div>
+          <a class="btn-outline" href="https://www.google.com/maps/d/edit?mid=1r9-PNoVEnSDVvWqkX3nTo1LVgE5R_dM&usp=sharing" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Edit Peta
+          </a>
+        </div>
+
+        <!-- Coverage info -->
+        <div class="info-box">
+          <div class="info-box-title">Coverage Information</div>
+          <p>Cakupan pemetaan difokuskan pada radius ±1 km dari KCP Jakarta S. Parman guna mengidentifikasi peluang pengembangan merchant QRIS/EDC dan akuisisi dana retail secara lebih terarah.</p>
+        </div>
+
+        <!-- Google My Maps embed -->
+        <div class="map-embed-wrap">
+          <iframe src="https://www.google.com/maps/d/embed?mid=1r9-PNoVEnSDVvWqkX3nTo1LVgE5R_dM&ehbc=2E312F" width="640" height="480"></iframe>
+        </div>
+
+        <!-- Navigation hint -->
+        <div class="nav-hint">
+          <div class="nav-hint-body">
+            <div class="nav-hint-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              Petunjuk Navigasi Peta
+            </div>
+            <p>Gunakan menu <strong>Legenda</strong> pada pojok kiri atas peta untuk mengaktifkan, menonaktifkan, atau menyaring layer informasi sesuai kebutuhan. Layer yang tersedia mencakup koridor wilayah, titik potensi merchant, lokasi tempat ibadah, corporate anchor, serta tampilan citra satelit guna mendukung analisis dan perencanaan aktivitas akuisisi lapangan.</p>
+          </div>
+          <a class="btn-outline" href="https://www.google.com/maps/d/edit?mid=1r9-PNoVEnSDVvWqkX3nTo1LVgE5R_dM&usp=sharing" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            Buka di Google Maps
+          </a>
+        </div>
+
+        <!-- Business highlights -->
+        <div class="highlights-box">
+          <div class="highlights-title">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Business Opportunity Highlights
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-dot"></div>
+            <p>Kawasan S. Parman didominasi oleh area komersial dan perkantoran yang berpotensi menjadi sumber pertumbuhan merchant QRIS/EDC.</p>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-dot"></div>
+            <p>Sebaran tempat ibadah yang relatif tinggi dalam area pemetaan menghadirkan peluang pengembangan ekosistem transaksi digital berbasis QRIS, sekaligus mendukung strategi akuisisi dan pendalaman hubungan nasabah komunitas.</p>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-dot"></div>
+            <p>Barito Pacific Group berperan sebagai corporate anchor utama yang dapat mendorong perluasan penetrasi bisnis retail di wilayah sekitar.</p>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-dot"></div>
+            <p>Hasil pemetaan membantu cabang dalam menentukan prioritas area pengembangan bisnis dan alokasi aktivitas akuisisi lapangan secara lebih efektif.</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── MONITORING PAGE ── -->
+      <section class="page" id="page-monitoring">
+
+        <!-- Header -->
+        <div class="section-header">
+          <div class="section-header-text">
+            <h2>Monitoring Merchant &amp; Nasabah</h2>
+            <p>Database monitoring merchant QRIS/EDC dan prospek nasabah yang diperbarui secara terintegrasi untuk mendukung aktivitas akuisisi dan tindak lanjut lapangan secara real-time.</p>
+          </div>
+          <a class="btn-outline" href="https://docs.google.com/spreadsheets/d/1t5D-W2gsJNL6jpxSAR01mlvJx7HPDK2Yk_wOW9V-cQA/edit?gid=1878177433" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+            </svg>
+            Buka Database Monitoring
+          </a>
+        </div>
+
+        <!-- Monitoring info checklist -->
+        <div class="info-box">
+          <div class="info-box-title">Monitoring Information</div>
+          <div class="checklist">
+            <div class="checklist-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Update Status Akuisisi
+            </div>
+            <div class="checklist-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Monitoring Merchant QRIS/EDC
+            </div>
+            <div class="checklist-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Prospek Nasabah Potensial
+            </div>
+            <div class="checklist-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Catatan Tindak Lanjut Lapangan
+            </div>
+          </div>
+        </div>
+
+        <!-- Embedded Google Sheets -->
+        <div class="section-header" style="flex-direction:column;gap:10px;padding-bottom:0;border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:none;margin-bottom:0;">
+          <div class="section-header-text">
+            <h2 style="font-size:15px;">Database Monitoring Merchant &amp; Nasabah</h2>
+          </div>
+        </div>
+        <div class="map-embed-wrap" style="border-top-left-radius:0;border-top-right-radius:0;border-top:none;height:520px;">
+          <iframe
+            src="https://docs.google.com/spreadsheets/d/1t5D-W2gsJNL6jpxSAR01mlvJx7HPDK2Yk_wOW9V-cQA/pubhtml?gid=1878177433&single=true&widget=true&headers=false"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+
+        <!-- Access hint -->
+        <div class="nav-hint" style="margin-bottom:0;">
+          <div class="nav-hint-body">
+            <div class="nav-hint-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              Akses Google Sheets
+            </div>
+            <p>Lebih nyaman menggunakan tampilan penuh? Klik tombol <strong>"Buka Database Monitoring"</strong> untuk membuka spreadsheet langsung di Google Sheets.</p>
+          </div>
+          <a class="btn-outline" href="https://docs.google.com/spreadsheets/d/1t5D-W2gsJNL6jpxSAR01mlvJx7HPDK2Yk_wOW9V-cQA/edit?gid=1878177433" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 0 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            Buka di Google Sheets
+          </a>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  // ── Inject logo ──
+  const LOGO_B64 = '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VWsg3SnGre/H8z4aYnzIq6j4nt8XscAf2Qu5iW6db4Kxk+U5TLXwNIJpaKn6AP7jIXOOngAe8KzKKYbpVFuNr6KILfTg52Vr7aBsnx/J9nVLg1Cf5BtlJOyaAUcQPCW8XYesniJJPMk6nUqFbP8AdvtOH5na8mpcpuFTNb5jI2KSnYGv1aWkEjmOTit7ItLauZrCwO0PmtzqaJzg4t1Cie1jCabaDhdRjNXXzUMU0schmiYHOBY4OA0PLnotMHdKsJBH88bpz/w0asmiQ1k0LdljsBJKaKU7T25K6t4o23G01lvdIY21UD4S8DUtDmka/Wq7DdKsIAH88bpy/wANGrJosYaqWDPVnGV7LTxy42xlYHZ7jUOHYZbMZp6qSrit8RibNI0Nc8cROpA5dqzyItLnFxJO8raAAMBan20bE7dtNyCju9bfqy3PpaXyZscMLXhw43O1JP6X1Lp7JNgdr2eZizJKTIq6vlZTyQdDNCxrdH6c9Rz7FuRFIFXMI+r2vR5LSaaIv6zZ1RERRlvREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREX/9k=';
+  document.getElementById('sidebarLogo').src = 'data:image/jpeg;base64,' + LOGO_B64;
+
+  // ── Date ──
+  const dateEl = document.getElementById('topbar-date');
+  const now = new Date();
+  dateEl.textContent = now.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  // ── Navigation ──
+  const pages = { home: 'Home Page', mapping: 'Mapping Area', monitoring: 'Monitoring Merchant' };
+
+  function navigate(key) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + key).classList.add('active');
+    document.querySelector('[data-page="' + key + '"]').classList.add('active');
+    document.getElementById('breadcrumb-label').textContent = pages[key];
+  }
+
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      navigate(item.dataset.page);
+    });
+  });
+
+  function handleLogout() {
+    if (confirm('Apakah Anda yakin ingin keluar dari portal?')) {
+      window.location.href = 'index.html';
+    }
+  }
+</script>
+
+</body>
+</html>
